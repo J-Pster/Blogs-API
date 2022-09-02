@@ -1,7 +1,7 @@
 const express = require('express');
 const rescue = require('express-rescue');
 
-const UserController = require('../controllers/userController');
+const CategoriesController = require('../controllers/categoriesController');
 const jwt = require('../middlewares/jwt');
 const GenericControllers = require('../controllers/genericControllers');
 const JoiBodyVals = require('../middlewares/JoiBodyVals');
@@ -11,14 +11,12 @@ const router = express.Router();
 // Na Collection
 
 router.post('/', [
-  JoiBodyVals.validateNewUser,
-  rescue(UserController.createUser),
+  jwt.validateToken,
+  JoiBodyVals.validateNewCategory,
+  rescue(CategoriesController.create),
 ]);
 
-router.get('/', [
-  jwt.validateToken,
-  rescue(UserController.getAll),
-]);
+router.get('/', rescue(GenericControllers.notAllowed));
 
 router.put('/', rescue(GenericControllers.notAllowed));
 
@@ -28,10 +26,7 @@ router.delete('/', rescue(GenericControllers.notAllowed));
 
 router.post('/:id', rescue(GenericControllers.notAllowed));
 
-router.get('/:id', [
-  jwt.validateToken,
-  rescue(UserController.getById),
-]);
+router.get('/:id', rescue(GenericControllers.notAllowed));
 
 router.put('/:id', rescue(GenericControllers.notAllowed));
 

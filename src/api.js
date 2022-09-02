@@ -9,9 +9,11 @@ app.use(express.json());
 // Middlewares
 const loginRouter = require('./routers/loginRouter');
 const userRouter = require('./routers/userRouter');
+const categoriesRouter = require('./routers/categoriesRouter');
 
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
+app.use('/categories', categoriesRouter);
 
 // Error Middlwares
 const errorMiddleware = require('./middlewares/genericErrors');

@@ -13,6 +13,12 @@ const getAll = async () => {
   return users.map(serializeUser);
 };
 
+const getById = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user) return { error: { code: 'notFound', message: 'User does not exist' } };
+  return serializeUser(user);
+};
+
 const createUser = async (user) => {
   const { email, password } = user;
   const userExists = await User.findOne({ where: { email, password } });
@@ -25,4 +31,5 @@ const createUser = async (user) => {
 module.exports = {
   createUser,
   getAll,
+  getById,
 };

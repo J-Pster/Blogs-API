@@ -30,7 +30,20 @@ const validateNewUser = (req, _res, next) => {
   next();
 };
 
+const validateNewCategory = (req, _res, next) => {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+  const { name } = req.body;
+
+  const { error } = schema.validate({ name });
+
+  if (error) return next(error);
+  next();
+};
+
 module.exports = {
   validateLogin,
   validateNewUser,
+  validateNewCategory,
 };
