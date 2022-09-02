@@ -16,7 +16,10 @@ router.post('/', [
   rescue(CategoriesController.create),
 ]);
 
-router.get('/', rescue(GenericControllers.notAllowed));
+router.get('/', [
+  jwt.validateToken,
+  rescue(CategoriesController.getAll),
+]);
 
 router.put('/', rescue(GenericControllers.notAllowed));
 
