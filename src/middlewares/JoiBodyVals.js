@@ -14,8 +14,23 @@ const validateLogin = (req, _res, next) => {
   }
 
   next();
-  };
+};
+
+const validateNewUser = (req, _res, next) => {
+  const schema = Joi.object({
+    displayName: Joi.string().min(8).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).required(),
+  });
+  const { displayName, email, password } = req.body;
+
+  const { error } = schema.validate({ displayName, email, password });
+
+  if (error) return next(error);
+  next();
+};
 
 module.exports = {
   validateLogin,
+  validateNewUser,
 };

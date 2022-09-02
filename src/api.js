@@ -8,8 +8,10 @@ app.use(express.json());
 
 // Middlewares
 const loginRouter = require('./routers/loginRouter');
+const userRouter = require('./routers/userRouter');
 
 app.use('/login', loginRouter);
+app.use('/user', userRouter);
 
 // Error Middlwares
 const errorMiddleware = require('./middlewares/genericErrors');
