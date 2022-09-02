@@ -2,6 +2,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 
 const UserController = require('../controllers/userController');
+const jwt = require('../middlewares/jwt');
 const GenericControllers = require('../controllers/genericControllers');
 const JoiBodyVals = require('../middlewares/JoiBodyVals');
 
@@ -14,7 +15,10 @@ router.post('/', [
   rescue(UserController.createUser),
 ]);
 
-router.get('/', rescue(GenericControllers.notAllowed));
+router.get('/', [
+  jwt.validateToken,
+  rescue(UserController.getAll),
+]);
 
 router.put('/', rescue(GenericControllers.notAllowed));
 

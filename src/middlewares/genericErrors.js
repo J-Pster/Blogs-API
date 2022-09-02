@@ -33,6 +33,7 @@ const errNotJoi = (err, _req, res, _next) => {
     alreadyExists: 409,
     badRequest: 400,
     conflict: 409,
+    jwt: 401,
   };
 
   const status = statusByErrorCode[err.code] || 500;
