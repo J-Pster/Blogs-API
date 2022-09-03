@@ -36,7 +36,7 @@ const deletePost = async (req, res, _next) => {
   console.log('---- DELETING POST CONTROLLER ----');
   const response = await PostService.deletePost(id);
   if (response.error) return res.status(400).json(response.error);
-  return res.status(204);
+  return res.status(204).json();
 };
 
 module.exports = {
