@@ -1,6 +1,6 @@
 const express = require('express');
 
-// ...
+// DESENVOLVIDO POR JOÃO PSTER DEV!
 
 const app = express();
 
