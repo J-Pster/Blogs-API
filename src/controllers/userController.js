@@ -21,8 +21,15 @@ const createUser = async (req, res, next) => {
   return res.status(201).json(response);
 };
 
+const selfDelete = async (req, res, _next) => {
+  const { id } = req.user;
+  await UserService.selfDelete(id);
+  return res.status(204).json();
+};
+
 module.exports = {
   createUser,
   getAll,
   getById,
+  selfDelete,
 };

@@ -1,18 +1,21 @@
+const { Op } = require('sequelize');
 const { BlogPost, PostCategory, Category, User } = require('../database/models');
+
+const postInclude = [
+  {
+    model: User,
+    as: 'user',
+    attributes: { exclude: ['password'] },
+  },
+  {
+    model: Category,
+    as: 'categories',
+  },
+];
 
 const getAll = async () => {
   const posts = await BlogPost.findAll({
-    include: [
-      {
-        model: User,
-        as: 'user',
-        attributes: { exclude: ['password'] },
-      },
-      {
-        model: Category,
-        as: 'categories',
-      },
-    ],
+    include: postInclude,
   });
 
   return posts;
@@ -20,21 +23,27 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const post = await BlogPost.findByPk(id, {
-    include: [
-      {
-        model: User,
-        as: 'user',
-        attributes: { exclude: ['password'] },
-      },
-      {
-        model: Category,
-        as: 'categories',
-      },
-    ],
+    include: postInclude,
   });
 
   if (!post) return { error: { code: 'notFound', message: 'Post does not exist' } };
   return post;
+};
+
+const search = async (query) => {
+  if (query === '') return getAll();
+
+  const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${query}%` } },
+        { content: { [Op.like]: `%${query}%` } },
+      ],
+    },
+    include: postInclude,
+  });
+
+  return posts;
 };
 
 const create = async ({ title, content, categoryIds, userId }) => {
@@ -70,9 +79,7 @@ const update = async (id, title, content) => {
 };
 
 const deletePost = async (id) => {
-  console.log('---- DELETING POST ----');
   const deletedPost = await BlogPost.destroy({ where: { id } });
-  if (!deletedPost) return { error: { code: 'notFound', message: 'Post does not exist' } };
   return deletedPost;
 };
 
@@ -82,4 +89,5 @@ module.exports = {
   getById,
   update,
   deletePost,
+  search,
 };

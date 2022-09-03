@@ -8,6 +8,13 @@ const JoiBodyVals = require('../middlewares/JoiBodyVals');
 
 const router = express.Router();
 
+// Especiais
+
+router.delete('/me', [
+  jwt.validateToken,
+  rescue(UserController.selfDelete),
+]);
+
 // Na Collection
 
 router.post('/', [

@@ -9,6 +9,13 @@ const JoiParamVals = require('../middlewares/JoiParamVals');
 
 const router = express.Router();
 
+// Especiais
+
+router.get('/search', [
+  jwt.validateToken,
+  rescue(PostController.search),
+]);
+
 // Na Collection
 
 router.post('/', [

@@ -28,8 +28,14 @@ const createUser = async (user) => {
   return jwt.generateToken(newUser);
 };
 
+const selfDelete = async (id) => {
+  const deletedUser = await User.destroy({ where: { id } });
+  return deletedUser;
+};
+
 module.exports = {
   createUser,
   getAll,
   getById,
+  selfDelete,
 };
