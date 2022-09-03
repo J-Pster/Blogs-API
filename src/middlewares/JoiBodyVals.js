@@ -61,6 +61,23 @@ const validateNewPost = (req, _res, next) => {
   next();
 };
 
+const validateUpdatePost = (req, _res, next) => {
+  const schema = Joi.object({
+    title: Joi.string().min(3).required(),
+    content: Joi.string().min(3).required(),
+  });
+  const { title, content } = req.body;
+
+  const { error } = schema.validate({ title, content });
+
+  if (error) {
+    next({ code: 'badRequest', message: 'Some required fields are missing' });
+    return false;
+  }
+
+  next();
+};
+
 const validateIfCategoriesExists = async (req, _res, next) => {
   const { categoryIds } = req.body;
 
@@ -80,4 +97,5 @@ module.exports = {
   validateNewCategory,
   validateNewPost,
   validateIfCategoriesExists,
+  validateUpdatePost,
 };

@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
-const { User } = require('../database/models');
+const { User, BlogPost } = require('../database/models');
 
 const SECRET = process.env.JWT_SECRET;
 const CONFIG = {
@@ -36,7 +36,21 @@ const validateToken = async (req, res, next) => {
   }
 };
 
+const validateIfOwnThePost = async (req, res, next) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  const post = await BlogPost.findByPk(id);
+
+  if (Number(post.userId) !== Number(userId)) {
+    return next({ code: 'jwt', message: 'Unauthorized user' }); 
+  }
+
+  next();
+};
+
 module.exports = {
   generateToken,
   validateToken,
+  validateIfOwnThePost,
 };

@@ -54,8 +54,24 @@ const create = async ({ title, content, categoryIds, userId }) => {
   return post;
 };
 
+const update = async (id, title, content) => {
+  const post = await BlogPost.findByPk(id);
+  if (!post) return { error: { code: 'notFound', message: 'Post does not exist' } };
+
+  const updatedPost = {
+    ...post,
+    title,
+    content,
+    updated: new Date(),
+  };
+
+  await post.update(updatedPost);
+  return getById(id);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

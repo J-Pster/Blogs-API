@@ -21,8 +21,19 @@ const create = async (req, res, next) => {
   return res.status(201).json(response);
 };
 
+const update = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+
+  const response = await PostService.update(id, title, content);
+  if (response.error) return next(response.error);
+
+  return res.status(200).json(response);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

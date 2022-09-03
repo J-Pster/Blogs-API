@@ -5,6 +5,7 @@ const PostController = require('../controllers/postController');
 const jwt = require('../middlewares/jwt');
 const GenericControllers = require('../controllers/genericControllers');
 const JoiBodyVals = require('../middlewares/JoiBodyVals');
+const JoiParamVals = require('../middlewares/JoiParamVals');
 
 const router = express.Router();
 
@@ -32,10 +33,17 @@ router.post('/:id', rescue(GenericControllers.notAllowed));
 
 router.get('/:id', [
   jwt.validateToken,
+  JoiParamVals.validateIfPostExists,
   rescue(PostController.getById),
 ]);
 
-router.put('/:id', rescue(GenericControllers.notAllowed));
+router.put('/:id', [
+  jwt.validateToken,
+  JoiParamVals.validateIfPostExists,
+  JoiBodyVals.validateUpdatePost,
+  jwt.validateIfOwnThePost,
+  rescue(PostController.update),
+]);
 
 router.delete('/:id', rescue(GenericControllers.notAllowed));
 
