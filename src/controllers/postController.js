@@ -31,9 +31,18 @@ const update = async (req, res, next) => {
   return res.status(200).json(response);
 };
 
+const deletePost = async (req, res, _next) => {
+  const { id } = req.params;
+  console.log('---- DELETING POST CONTROLLER ----');
+  const response = await PostService.deletePost(id);
+  if (response.error) return res.status(400).json(response.error);
+  return res.status(204);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  deletePost,
 };

@@ -45,6 +45,11 @@ router.put('/:id', [
   rescue(PostController.update),
 ]);
 
-router.delete('/:id', rescue(GenericControllers.notAllowed));
+router.delete('/:id', [
+  jwt.validateToken,
+  JoiParamVals.validateIfPostExists,
+  jwt.validateIfOwnThePost,
+  rescue(PostController.deletePost),
+]);
 
 module.exports = router;

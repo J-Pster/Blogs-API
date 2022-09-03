@@ -46,6 +46,7 @@ const validateIfOwnThePost = async (req, res, next) => {
     return next({ code: 'jwt', message: 'Unauthorized user' }); 
   }
 
+  console.log('---- DONO DO POST FEITO ----');
   next();
 };
 

@@ -69,9 +69,17 @@ const update = async (id, title, content) => {
   return getById(id);
 };
 
+const deletePost = async (id) => {
+  console.log('---- DELETING POST ----');
+  const deletedPost = await BlogPost.destroy({ where: { id } });
+  if (!deletedPost) return { error: { code: 'notFound', message: 'Post does not exist' } };
+  return deletedPost;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  deletePost,
 };
